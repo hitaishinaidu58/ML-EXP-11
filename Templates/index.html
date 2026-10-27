@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Insurance Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 25px;
+        }
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #ccc;
+        }
+        h1 {
+            text-align: center;
+            color: #244675;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 22px;
+            background: #2459a9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .result {
+            background: #e8f5e9;
+            padding: 16px;
+            margin-top: 22px;
+            border-radius: 8px;
+        }
+        .error {
+            color: #b00020;
+        }
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Medical Insurance Cost Prediction</h1>
+    <p>Enter the details below to estimate insurance cost.</p>
+
+    <form action="/predict" method="POST">
+        <div class="grid">
+            <div>
+                <label>Age</label>
+                <input type="number" name="age"
+                       min="18" max="100" value="30" required>
+            </div>
+
+            <div>
+                <label>Gender</label>
+                <select name="sex" required>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
+            </div>
+
+            <div>
+                <label>BMI</label>
+                <input type="number" name="bmi"
+                       min="10" max="80" step="0.1"
+                       value="25.5" required>
+            </div>
+
+            <div>
+                <label>Number of Children</label>
+                <input type="number" name="children"
+                       min="0" max="20" value="0" required>
+            </div>
+
+            <div>
+                <label>Smoker</label>
+                <select name="smoker" required>
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Region</label>
+                <select name="region" required>
+                    <option value="southeast">Southeast</option>
+                    <option value="southwest">Southwest</option>
+                    <option value="northwest">Northwest</option>
+                    <option value="northeast">Northeast</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit">Predict Insurance Cost</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        <h3>Prediction Results</h3>
+        <p><strong>Cost Category:</strong> {{ prediction }}</p>
+        <p><strong>Estimated Insurance Charges:</strong>
+           {{ "%.2f"|format(grade) }}</p>
+        <p><small>Estimated charges are in the dataset's original
+           currency units (USD).</small></p>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+</div>
+</body>
+</html>
